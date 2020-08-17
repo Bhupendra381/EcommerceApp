@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "794719736923",
+    "firebase_url": "https://ecommerceapp-freelancer.firebaseio.com",
+    "project_id": "ecommerceapp-freelancer",
+    "storage_bucket": "ecommerceapp-freelancer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794719736923:android:355e6f241b8c960b091b7e",
+        "android_client_info": {
+          "package_name": "com.ecommerceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794719736923-t57icprr5v95720t0sn84bugt5if6sah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecommerceapp",
+            "certificate_hash": "1df2d5d005beac68f87a4992145dc5498c52d7d1"
+          }
+        },
+        {
+          "client_id": "794719736923-scp39udr0l8re3vd8n46emo977amso9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbNRVKnK7bycNJ4mt3Sov8VH0ltDH6dAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794719736923-scp39udr0l8re3vd8n46emo977amso9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
