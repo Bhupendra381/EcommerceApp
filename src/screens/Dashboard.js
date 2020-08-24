@@ -1,6 +1,5 @@
 import React from "react";
 import {
-	StyleSheet,
 	ScrollView,
 	View,
 	TouchableOpacity,
@@ -15,8 +14,8 @@ import ProductItemList from "../components/ProductItemList";
 import SortBy from "../components/Popups/SortBy";
 
 import Layout from "../constants/Layout";
-import Theme from "../constants/Theme";
 import FontSize from "../constants/FontSize";
+import { lightTheme, darkTheme } from "../constants/Theme";
 
 import bind from "../redux/bind";
 
@@ -71,13 +70,18 @@ class Dashboard extends React.Component {
 	render() {
 		const {
 			cartLength,
+			theme,
 		} = this.props;
+
+
+		const colors = theme === "light" ? lightTheme : darkTheme;
+		const styles = useStyles(colors);
 
 		return (
 			<View style={styles.container}>
-				<ScrollView style={{ flex: 1, backgroundColor: Theme.medium, }}>
+				<ScrollView style={{ flex: 1, backgroundColor: colors.medium, }}>
 					<LinearGradient
-						colors={[Theme.gradient.start, Theme.gradient.end]}
+						colors={[colors.gradient.start, colors.gradient.end]}
 						style={styles.headerContainer}
 					>
 						<View style={styles.header}>
@@ -91,6 +95,7 @@ class Dashboard extends React.Component {
 								/>
 							</TouchableOpacity>
 							<AppText style={styles.screenTitle}>Dashboard</AppText>
+
 							<TouchableOpacity
 								style={[styles.headerIconContainer, styles.myCartContainer]}
 								onPress={() => this.props.navigation.jumpTo("Cart")}
@@ -183,7 +188,7 @@ class Dashboard extends React.Component {
 					</View>
 				</ScrollView>
 				<LinearGradient
-					colors={[Theme.gradient.end + "99", Theme.gradient.start + "99"]}
+					colors={[colors.gradient.end + "99", colors.gradient.start + "99"]}
 					style={styles.bottomTabBar}
 				>
 					<TouchableOpacity
@@ -251,7 +256,7 @@ class Dashboard extends React.Component {
 	}
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors) => ({
 	container: {
 		flex: 1,
 	},
@@ -290,19 +295,19 @@ const styles = StyleSheet.create({
 		borderRadius: 18 / 2 * Layout.ratio,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: Theme.medium,
+		backgroundColor: colors.medium,
 		borderWidth: 0.5,
-		borderColor: Theme.dim,
+		borderColor: colors.dim,
 	},
 	cartItemsCounterText: {
 		fontSize: FontSize[10],
 		fontWeight: "bold",
-		color: Theme.text,
+		color: colors.text,
 	},
 	screenTitle: {
 		fontSize: FontSize[30],
 		fontWeight: "bold",
-		color: Theme.bright,
+		color: colors.bright,
 		marginLeft: 16 * Layout.ratio,
 		marginTop: -4,
 	},
@@ -344,11 +349,11 @@ const styles = StyleSheet.create({
 	},
 	paginationLabel: {
 		fontSize: FontSize[7],
-		color: Theme.text,
+		color: colors.text,
 	},
 	paginationCounter: {
 		fontSize: FontSize[10],
-		color: Theme.text,
+		color: colors.text,
 		marginHorizontal: 8 * Layout.ratio,
 	},
 
@@ -377,7 +382,7 @@ const styles = StyleSheet.create({
 	sortLabel: {
 		fontSize: FontSize[16],
 		fontWeight: "bold",
-		color: Theme.bright,
+		color: colors.bright,
 	},
 	viewButton: {
 		flexDirection: "row",
@@ -387,7 +392,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 	},
 	viewButtonSelected: {
-		borderColor: Theme.bright,
+		borderColor: colors.bright,
 		paddingLeft: 11 * Layout.ratio,
 		paddingRight: 6 * Layout.ratio,
 	},
@@ -407,7 +412,7 @@ const styles = StyleSheet.create({
 	viewLabel: {
 		fontSize: FontSize[12],
 		fontWeight: "bold",
-		color: Theme.bright,
+		color: colors.bright,
 		marginLeft: 5 * Layout.ratio,
 	},
 });
