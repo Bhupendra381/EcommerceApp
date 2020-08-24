@@ -1,13 +1,13 @@
 import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { Switch, View, Image, TouchableOpacity } from "react-native";
 
 import AppText from "../components/AppText";
 import UserAvatar from "../components/UserAvatar";
 
 import Layout from "../constants/Layout";
-import Theme from "../constants/Theme";
 import FontSize from "../constants/FontSize";
+import { lightTheme, darkTheme } from "../constants/Theme";
 
 import realmConnect from "../realm";
 import bind from "../redux/bind";
@@ -18,9 +18,11 @@ import Cart from "./Cart";
 const Drawerr = createDrawerNavigator();
 
 const CustomDrawerSidebar = bind((props) => {
-	const { state, navigation, user, authenticateUser, updateCart, updatePromo } = props;
+	const { state, navigation, user, authenticateUser, updateCart, updatePromo, theme, switchTheme } = props;
 	const { routes, index } = state;
 	const routeName = routes[index].name;
+	const colors = theme === "light" ? lightTheme : darkTheme;
+	const styles = useStyles(colors);
 
 	return (
 		<View style={styles.drawerContainer}>
@@ -131,11 +133,41 @@ const CustomDrawerSidebar = bind((props) => {
 				</View>
 				<AppText style={styles.itemLabel}>Log out</AppText>
 			</TouchableOpacity>
+			<TouchableOpacity
+				style={styles.itemContainer}
+				onPress={() => {
+					const newTheme = theme === "light" ? "dark" : "light";
+
+					realmConnect(realm => {
+						realm.write(() => {
+							let checkTheme = realm.objects("theme");
+							if (!checkTheme.length) {
+								realm.create("theme", {
+									template: newTheme,
+								});
+							}
+							else checkTheme[0].template = newTheme;
+
+							switchTheme(newTheme);
+						});
+					});
+				}}
+			>
+				<View style={styles.itemIconContainer}>
+					<Switch
+						trackColor={{ false: lightTheme.dim, true: lightTheme.medium }}
+						thumbColor={theme === "light" ? lightTheme.medium : darkTheme.dim}
+						value={theme === "dark"}
+					/>
+				</View>
+				<AppText style={styles.itemLabel}>Change Theme</AppText>
+			</TouchableOpacity>
+
 		</View>
 	);
 });
 
-export default function Drawer({ navigation, route }) {
+export default function Drawer() {
 	return (
 		<Drawerr.Navigator
 			initialRouteName="Dashboard"
@@ -155,12 +187,12 @@ export default function Drawer({ navigation, route }) {
 	);
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors) => ({
 	drawerContainer: {
 		flex: 1,
 		paddingVertical: 24 * Layout.ratio,
 		paddingHorizontal: 20,
-		backgroundColor: Theme.bright,
+		backgroundColor: colors.bright,
 	},
 	drawerHeader: {
 		flexDirection: "row",
@@ -181,18 +213,18 @@ const styles = StyleSheet.create({
 	name: {
 		fontSize: FontSize[22],
 		fontWeight: "bold",
-		color: Theme.text,
+		color: colors.text,
 	},
 	email: {
 		fontSize: FontSize[16],
-		color: Theme.text,
+		color: colors.text,
 	},
 
 	horizontalBar: {
 		alignSelf: "stretch",
 		height: 1,
 		marginBottom: 16 * Layout.ratio,
-		backgroundColor: Theme.dim,
+		backgroundColor: colors.dim,
 	},
 
 	itemContainer: {
@@ -203,7 +235,7 @@ const styles = StyleSheet.create({
 		marginBottom: 8 * Layout.ratio,
 	},
 	itemContainerSelected: {
-		backgroundColor: Theme.primary + "33",
+		backgroundColor: colors.primary + "33",
 	},
 	itemIconContainer: {
 		height: "100%",
@@ -222,9 +254,9 @@ const styles = StyleSheet.create({
 	itemLabel: {
 		fontSize: FontSize[20],
 		fontWeight: "bold",
-		color: Theme.text,
+		color: colors.text,
 	},
 	itemLabelSelected: {
-		color: Theme.primary,
+		color: colors.primary,
 	},
 });
