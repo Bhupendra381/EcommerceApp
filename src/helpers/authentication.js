@@ -29,11 +29,27 @@ async function signUp(data, authenticateUser, updateCart, updatePromo, navigatio
 	}
 	email = res.text;
 
+	res = verify.phone(phone);
+	if (res.error) {
+		Alert.alert("Invalid phone", res.error);
+		return res.error;
+	}
+	phone = res.text;
+
+
+	res = verify.password(password);
+	if (res.error) {
+		Alert.alert("Invalid password", res.error);
+		return res.error;
+	}
+	password = res.text;
+
 	if (password !== confirm_password) {
 		Alert.alert("Passwords don't match", "Make sure to type your password " +
 			"correctly in both of the fields.");
 		return true;
 	}
+
 
 	try {
 		realmConnect(realm => {
