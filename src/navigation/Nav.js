@@ -34,7 +34,8 @@ class Screens extends React.Component {
 		const {
 			authenticateUser,
 			updateCart,
-			updatePromo
+			updatePromo,
+			switchTheme,
 		} = this.props;
 
 		try {
@@ -63,6 +64,16 @@ class Screens extends React.Component {
 							discount: 25,
 						});
 					}
+
+					let theme = realm.objects("theme");
+					if (!theme.length) {
+						realm.create("theme", {
+							template: "light",
+						});
+						theme = "light";
+					}
+					else theme = theme[0].template;
+					switchTheme(theme);
 				});
 				this.setState({ realm });
 			});
