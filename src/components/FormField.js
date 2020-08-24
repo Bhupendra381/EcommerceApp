@@ -117,6 +117,19 @@ const verify = {
 			error,
 		};
 	},
+
+	phone: (text) => {
+		text = text.trim();
+		let error = "";
+		if (text === "") error = "Phone no. cannot be empty!";
+		if (!RegExp(/^\d{10}$/).test(text)) error = "Phone no. must have 10 digits.";
+
+		return {
+			text,
+			error,
+		};
+	},
+
 	email: (text) => {
 		text = text.trim();
 		let error = "";
@@ -124,6 +137,16 @@ const verify = {
 		if (!RegExp(
 			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 			.test(text)) error = "Invalid email format. Kindly make sure the email is typed correctly.";
+		return {
+			text,
+			error,
+		};
+	},
+
+	password: (text) => {
+		text = text.trim();
+		let error = "";
+		if (text === "") error = "Password cannot be empty!";
 		return {
 			text,
 			error,
