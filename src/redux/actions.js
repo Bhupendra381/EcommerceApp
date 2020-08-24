@@ -1,4 +1,4 @@
-import { AUTHENTICATE_USER, UPDATE_CART, UPDATE_PROMO } from "./types";
+import { AUTHENTICATE_USER, UPDATE_CART, UPDATE_PROMO, SWITCH_THEME } from "./types";
 
 function authenticateUser(user) {
 	return {
@@ -21,10 +21,19 @@ function updatePromo(promo) {
 	};
 }
 
+function switchTheme(theme) {
+	return {
+		type: SWITCH_THEME,
+		theme,
+	};
+}
+
+
 const actionCreators = {
 	authenticateUser,
 	updateCart,
 	updatePromo,
+	switchTheme,
 };
 
 export { actionCreators };
