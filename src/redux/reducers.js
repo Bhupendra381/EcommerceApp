@@ -1,7 +1,8 @@
-import { AUTHENTICATE_USER, UPDATE_CART, UPDATE_PROMO } from "./types";
+import { AUTHENTICATE_USER, UPDATE_CART, UPDATE_PROMO, SWITCH_THEME } from "./types";
 
 const initialState = {
-	cartLength: 0, 
+	theme: 'light',
+	cartLength: 0,
 	cart: [],
 	user: {
 		signInMethod: "EMAIL",
@@ -44,6 +45,7 @@ function applyAuthenticateUser(state, user) {
 			cart,
 			promo,
 		},
+		theme: state.theme,
 		promo: state.promo,
 	};
 }
@@ -59,6 +61,7 @@ function applyUpdateCart(state, cart) {
 		cartLength: cart.length,
 		cart,
 		user,
+		theme: state.theme,
 		promo: state.promo,
 	};
 }
@@ -73,8 +76,20 @@ function applyUpdatePromo(state, promo) {
 	return {
 		cartLength: state.cartLength,
 		cart: state.cart,
+		theme: state.theme,
 		user,
 		promo,
+	};
+}
+
+
+function applySwitchTheme(state, theme) {
+	return {
+		cartLength: state.cartLength,
+		cart: state.cart,
+		user: state.user,
+		promo: state.promo,
+		theme,
 	};
 }
 
@@ -86,6 +101,8 @@ function reducer(state = initialState, action) {
 			return applyUpdateCart(state, action.cart);
 		case UPDATE_PROMO:
 			return applyUpdatePromo(state, action.promo);
+		case SWITCH_THEME:
+			return applySwitchTheme(state, action.theme);
 		default:
 			return state;
 	}
