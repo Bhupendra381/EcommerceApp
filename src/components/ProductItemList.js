@@ -4,6 +4,7 @@ import {
 	TouchableOpacity,
 	View,
 	Image,
+	Modal
 } from "react-native";
 
 import AppText from "./AppText";
@@ -11,11 +12,22 @@ import AppText from "./AppText";
 import Layout from "../constants/Layout";
 import Theme from "../constants/Theme";
 import FontSize from "../constants/FontSize";
+import AddToCart from '../components/Popups/AddToCart';
 
 export default class ProductItemList extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			addToCartPopupOpen: false,
+		};
+
+		this.onClose = this.onClose.bind(this);
 	}
+
+	onClose() {
+		this.setState({ addToCartPopupOpen: false, buyNowPopup: false });
+	}
+
 
 	render() {
 		const {
@@ -34,35 +46,61 @@ export default class ProductItemList extends React.Component {
 		} = data;
 
 		return (
-	       <TouchableOpacity
-		       activeOpacity={0.8}
-		       style={[styles.container, style]}
-		       onPress={() => navigation.push("Product", { id })}
-	       >
-		       <View style={styles.left}>
-			       <View style={styles.imageContainer}>
-				       <Image
-					       source={{ uri: thumbnail_image }}
-					       style={styles.image}
-					       resizeMode="contain"
-				       />
-			       </View>
-		       </View>
-		       <View style={styles.right}>
-			       <AppText style={styles.name}>{name}</AppText>
-			       <AppText style={styles.description}>{description}</AppText>
-			       <View style={styles.footer}>
-				       <View style={styles.footerInfo}>
-					       <AppText style={styles.footerText}>{discount}%</AppText>
-					       <AppText style={styles.footerLabel}>Off</AppText>
-				       </View>
-				       <View style={[styles.footerInfo, styles.priceContainer]}>
-					       <AppText style={styles.footerLabel}>Price</AppText>
-					       <AppText style={styles.footerText}>₹{price}</AppText>
-				       </View>
-			       </View>
-		       </View>
-	       </TouchableOpacity>
+			<TouchableOpacity
+				activeOpacity={0.8}
+				style={[styles.container, style]}
+				onPress={() => navigation.push("Product", { id })}
+			>
+				<TouchableOpacity
+					onPress={() => this.setState({ addToCartPopupOpen: true })}
+				>
+					<AppText>Add to cart</AppText>
+					<Modal
+						animationType="fade"
+						transparent={true}
+						visible={this.state.addToCartPopupOpen}
+						onRequestClose={() => this.onClose()}
+						onDismiss={() => this.onClose()}
+					>
+						<AddToCart
+							title="Add this item to your cart"
+							onClose={this.onClose}
+							onAddToCart={() => { }}
+							product={{
+								id,
+								thumbnailSource: thumbnail_image,
+								title: name,
+								description,
+								discount: discount.toString(),
+								price,
+							}}
+						/>
+					</Modal>
+				</TouchableOpacity>
+				<View style={styles.left}>
+					<View style={styles.imageContainer}>
+						<Image
+							source={{ uri: thumbnail_image }}
+							style={styles.image}
+							resizeMode="contain"
+						/>
+					</View>
+				</View>
+				<View style={styles.right}>
+					<AppText style={styles.name}>{name}</AppText>
+					<AppText style={styles.description}>{description}</AppText>
+					<View style={styles.footer}>
+						<View style={styles.footerInfo}>
+							<AppText style={styles.footerText}>{discount}%</AppText>
+							<AppText style={styles.footerLabel}>Off</AppText>
+						</View>
+						<View style={[styles.footerInfo, styles.priceContainer]}>
+							<AppText style={styles.footerLabel}>Price</AppText>
+							<AppText style={styles.footerText}>₹{price}</AppText>
+						</View>
+					</View>
+				</View>
+			</TouchableOpacity>
 		);
 	}
 };
