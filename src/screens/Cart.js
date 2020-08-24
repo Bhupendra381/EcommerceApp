@@ -1,6 +1,5 @@
 import React from "react";
 import {
-	StyleSheet,
 	ScrollView,
 	View,
 	TouchableOpacity,
@@ -16,7 +15,7 @@ import PromoCode from "../components/PromoCode";
 import handlePurchase from "../helpers/handlePurchase";
 
 import Layout from "../constants/Layout";
-import Theme from "../constants/Theme";
+import { lightTheme, darkTheme } from "../constants/Theme";
 import FontSize from "../constants/FontSize";
 
 import bind from "../redux/bind";
@@ -60,7 +59,11 @@ class Cart extends React.Component {
 		const {
 			cart,
 			promo,
+			theme,
 		} = this.props;
+
+		const colors = theme === "light" ? lightTheme : darkTheme;
+		const styles = useStyles(colors);
 
 		let totalPrice = 0;
 		cart.forEach(item => { totalPrice += item.price * item.quantity });
@@ -68,9 +71,9 @@ class Cart extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				<ScrollView style={{ flex: 1, backgroundColor: Theme.medium, }}>
+				<ScrollView style={{ flex: 1, backgroundColor: colors.medium, }}>
 					<LinearGradient
-						colors={[Theme.gradient.start, Theme.gradient.end]}
+						colors={[colors.gradient.start, colors.gradient.end]}
 						style={styles.headerContainer}
 					>
 						<View style={styles.header}>
@@ -158,7 +161,7 @@ class Cart extends React.Component {
 	}
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors) => ({
 	container: {
 		flex: 1,
 	},
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
 	screenTitle: {
 		fontSize: FontSize[30],
 		fontWeight: "bold",
-		color: Theme.bright,
+		color: colors.bright,
 		marginLeft: 16 * Layout.ratio,
 		marginTop: -4,
 	},
@@ -205,7 +208,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 12,
 		paddingBottom: 8,
 		borderRadius: 8 * Layout.ratio,
-		backgroundColor: Theme.bright,
+		backgroundColor: colors.bright,
 		elevation: 4,
 		marginBottom: 16 * Layout.ratio,
 	},
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 14 * Layout.ratio,
 		borderRadius: 5 * Layout.ratio,
 		marginBottom: 26 * Layout.ratio,
-		backgroundColor: Theme.bright,
+		backgroundColor: colors.bright,
 		elevation: 4,
 	},
 	memoHeaderContainer: {
@@ -246,7 +249,7 @@ const styles = StyleSheet.create({
 	},
 	memoHeader: {
 		fontSize: FontSize[16],
-		color: Theme.dim,
+		color: colors.dim,
 	},
 	priceHeader: {
 		marginLeft: "auto",
@@ -261,23 +264,23 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: FontSize[18],
 		fontWeight: "bold",
-		color: Theme.text,
+		color: colors.text,
 	},
 	memoItemQuantity: {
 		fontSize: FontSize[14],
-		color: Theme.dim,
+		color: colors.dim,
 		marginLeft: 4 * Layout.ratio,
 		marginRight: 23 * Layout.ratio,
 	},
 	memoItemPrice: {
 		fontSize: FontSize[18],
 		fontWeight: "bold",
-		color: Theme.text,
+		color: colors.text,
 		marginLeft: "auto",
 	},
 	horizontalBar: {
 		height: 1,
-		backgroundColor: Theme.dim,
+		backgroundColor: colors.dim,
 		marginTop: 8 * Layout.ratio,
 		marginBottom: 6 * Layout.ratio,
 		marginHorizontal: 8 * Layout.ratio,
@@ -290,13 +293,13 @@ const styles = StyleSheet.create({
 	},
 	totalLabel: {
 		fontSize: FontSize[14],
-		color: Theme.dim,
+		color: colors.dim,
 		marginRight: 8 * Layout.ratio,
 	},
 	totalText: {
 		fontSize: FontSize[18],
 		fontWeight: "bold",
-		color: Theme.text,
+		color: colors.text,
 	},
 
 	shippingAddress: {
